@@ -9,10 +9,9 @@
                     <% } else { %>
                         <strong><%= __('name') %>:</strong> <%= exercise.name %><br>
                     <% } %>
-                    <!-- <strong>Name:</strong> <%= exercise.name %><br> -->
                     <strong><%= __('progress') %>:</strong> <%= exercise.progress %><br>
                     <strong><%= __('level') %>:</strong> <%= exercise.exercise_level %><br>
-                    <!-- Bootstrap Carousel for Exercise Photos -->
+            
                     <div id="Carousel<%= exercise._id %>" class="carousel slide">
                         <div class="carousel-inner">
                             <% exercise.photos.forEach((photo, index) => { %>

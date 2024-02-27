@@ -20,7 +20,7 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li class="list active">
-                  <a href="/">
+                  <a href="/index">
                       <span class="icon">
                           <img src="../assets3/home.png" class="mb-3" width="30" height="30" alt="">
                       </span>
@@ -54,7 +54,7 @@
               <li class="list">
                 <a href="/admin">
                     <span class="icon">
-                        <img src="../assets3/store.png" class="mb-3" width="30" height="30" alt="">
+                        <img src="../assets3/adminka.png" class="mb-3" width="30" height="30" alt="">
                     </span>
                     <span class="text">Admin</span>
                 </a>
@@ -76,9 +76,6 @@
             
           </ul>
   
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" id="profileExerciseSearchInput" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-          </form>
   
           <div class="text-end">
             <a href="/login"><button type="button" class="custom-btn me-2">Login</button></a>
@@ -100,10 +97,9 @@
                 <h1 class="text-center text-glow">Settings</h1>
                 <hr>
                 <div id="userInfo">
-                    <!-- This div will initially show user information -->
+                   
                     <div class="card">
                         <div class="card-body">
-                            <!-- Display user information here -->
                             <h4 class="card-title"><span id="username"><%= user ? user.name : 'N/A' %></span></h4>
                             <p class="card-text"><span id="email"><%= user ? user.email : 'N/A' %></span></p>
                             <p class="card-text">Weight: <span id="weight"><%= user ? user.weight : 'N/A' %></span></p>

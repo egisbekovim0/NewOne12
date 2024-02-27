@@ -39,11 +39,11 @@
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 .profile-progress-bar .progress-text {
-margin-right: 10px; /* Adjust margin as needed */
+margin-right: 10px; 
 }
 .profile-progress-bar .attribute {
-font-size: 14px; /* Adjust font size as needed */
-color: #555; /* Adjust text color as needed */
+font-size: 14px; 
+color: #555; 
 }
 
 .profile-progress-bar .bar:hover {
@@ -81,7 +81,7 @@ color: #555; /* Adjust text color as needed */
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li class="list active">
-                  <a href="/">
+                  <a href="/index">
                       <span class="icon">
                           <img src="../assets3/home.png" class="mb-3" width="30" height="30" alt="">
                       </span>
@@ -129,17 +129,6 @@ color: #555; /* Adjust text color as needed */
             
           </ul>
 
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              <%= __('language') %>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-              <!-- <a class="dropdown-item" href="?lang=<%= i18n.getLocale() %>">English</a>
-              <a class="dropdown-item" href="?lang=ru">Русский</a> -->
-              <li><a class="dropdown-item" href="?lang=<%= i18n.getLocale()  === 'ru' ? 'en' : i18n.getLocale() %>">English</a></li>
-              <li><a class="dropdown-item" href="?lang=ru">Русский</a></li>
-            </ul>
-          </div>
   
           <div class="text-end">
             <a href="/login"><button type="button" class="custom-btn me-2">Login</button></a>

@@ -1,11 +1,11 @@
 import express from 'express'
-import { getAllUser, login, editUser, updateUser, deleteUser, signup, fetchForProfile, searchExercises, searchExercisesForProfile, decreaseHungerForAllUsers ,getExercises, getUserById, updateExerciseProgress, updateUser2} from '../controllers/user-controller.js'
+import { getAllUser, login, editUser, isAdminMiddleware, updateUser, deleteUser, signup, fetchForProfile, searchExercises, searchExercisesForProfile, decreaseHungerForAllUsers ,getExercises, getUserById, updateExerciseProgress, updateUser2} from '../controllers/user-controller.js'
 const router = express.Router()
 
 
 router.get("/", getAllUser )
-router.put('/admin/edit/:id', editUser);
-router.delete('/admin/delete/:id', deleteUser);
+router.put('/admin/edit/:id', isAdminMiddleware, editUser);
+router.delete('/admin/delete/:id', isAdminMiddleware, deleteUser);
 router.post("/searchExercises", searchExercises )
 router.post("/fetchAllExercisesForProfile", fetchForProfile )
 router.post("/searchExercisesForProfile", searchExercisesForProfile )

@@ -3,6 +3,7 @@ import basicAuth from 'express-basic-auth'
 import mongoose from 'mongoose'
 import router from './routes/user-routes.js'
 import session from 'express-session'
+import flash from 'express-flash'
 import ExerciseType from './models/ExerciseType.js'
 import Exercise from './models/Exercise.js'
 import exerciseRouter from './routes/exercise-routes.js'
@@ -10,8 +11,6 @@ import orderRouter from './routes/order-routes.js'
 import productRouter from './routes/product-router.js'
 import exerciseTypeRouter from './routes/exercise-type-routes.js'
 import i18n from 'i18n'
-
-
 
 import productCategoryRouter from './routes/product-category-routes.js'
 import path from 'path'
@@ -25,6 +24,7 @@ import foodRouter from './routes/food-routes.js'
 const app = express()
 
 app.use(express.json())
+app.use(flash());
 app.use(express.urlencoded({ extended: true }));
 app.use(i18n.init);
 
@@ -42,8 +42,8 @@ app.use(basicAuth({
 
 app.use(
     session({
-      secret: 'your-secret-key', 
-      resave: false,
+      secret: 'my-secret-diamon-key', 
+      resave: true,
       saveUninitialized: true,
     })
 )
@@ -68,23 +68,15 @@ i18n.configure({
 });
 
 app.use((req, res, next) => {
-    // Check if the lang query parameter is present
+
     const lang = req.query.lang || req.session.lang || 'en';
 
-    // Set the locale for i18n
     req.setLocale(lang);
 
-    // Save the selected language to the session
     req.session.lang = lang;
 
     next();
 });
-// app.use((req, res, next) => {
-//     // You can set the language based on user preferences, session, or any other logic.
-//     const lang = req.query.lang || 'en';
-//     req.setLocale(lang);
-//     next();
-// });
 
 
 app.use("/api/user", router)
@@ -97,6 +89,21 @@ app.use("/api/product", productRouter)
 app.use("/api/exerciseType", exerciseTypeRouter)
 app.use("/api/muscleType", muscleTypeRouter)
 app.use("/api/productCategory", productCategoryRouter)
+
+
+const requireAuth = (req, res, next) => {
+    const currentUser = req.session.user;
+
+    if (!currentUser) {
+        
+        req.flash('error', 'Please log in first.'); 
+        return res.redirect('/login');
+    }
+
+    next();
+};
+
+app.use(['/profile', '/order', '/stats', '/shop', '/exerciseOne', '/statis', '/exercise', '/enemy', '/settings'], requireAuth);
 
 
 app.get('/admin', async (req, res) => {
@@ -117,6 +124,15 @@ app.get('/admin', async (req, res) => {
 app.get('/', (req, res) => {
     const one_user = req.session.user 
     if (one_user) {
+        res.render('signin', { user: one_user, i18n: res })
+    } else {
+        res.render('signin', {user: null, i18n: res })
+    } 
+});
+
+app.get('/index', (req, res) => {
+    const one_user = req.session.user 
+    if (one_user) {
         res.render('index', { user: one_user, i18n: res })
     } else {
         res.render('index', {user: null, i18n: res })
@@ -132,23 +148,12 @@ app.get('/quiz', (req, res) => {
     res.render('quiz', { user: one_user, i18n: res })
 });
 
-// app.get('/fitness', (req, res) => {
-//     const one_user = req.session.user 
-//     res.render('fitness', { user: one_user, latestBurnedCalorie: null, i18n: res})
-// });
-
 
 app.get('/stats', (req, res) => {
     res.render('statistics')
 });
 
 
-
-
-// app.get('/order', (req, res) => {
-//     const indexPath = path.join(__dirname,'..', 'frontend', 'pages', 'orders.html');
-//     res.sendFile(indexPath);
-// });
 app.get('/shop', async (req, res) => {
     const exercises = await Exercise.find(); 
     const one_user = req.session.user 
@@ -175,10 +180,6 @@ app.get('/settings', async (req, res) => {
     const one_user = req.session.user 
     res.render("settings", { user: one_user, i18n: res });
 });
-// app.get('/exerciseAdd', (req, res) => {
-//     const one_user = req.session.user 
-//     res.render('exerciseAdd', { user: one_user })
-// });
 
 app.get('/profile', (req, res) => {
     const one_user = req.session.user 
@@ -199,22 +200,12 @@ app.get('/register', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about')
 });
-// app.get('/about', (req, res) => {
-//     const indexPath = path.join(__dirname,'..', 'frontend', 'pages', 'about.html');
-//     res.sendFile(indexPath);
-// });
-// app.get('/login', (req, res) => {
-//     const indexPath = path.join(__dirname,'..', 'frontend', 'pages', 'signin.html');
-//     res.sendFile(indexPath);
-// });
-// app.get('/register', (req, res) => {
-//     const indexPath = path.join(__dirname,'..', 'frontend', 'pages', 'signup.html');
-//     res.sendFile(indexPath);
-// });
 
-mongoose.connect("mongodb://localhost:27017/TrainAnd").then(async () => {
 
-  app.listen(5009, () => {
-    console.log("Connected to database and listening on port 5009");
+
+mongoose.connect("mongodb+srv://guest:181817@clustercool.itryi0d.mongodb.net/TrainingCamp?retryWrites=true&w=majority").then(async () => {
+
+  app.listen(5010, () => {
+    console.log("Connected to database and listening on port 5010");
   });
 }).catch((err) => console.error('Error connecting to database:', err));
