@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/headers.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/customMenu.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li class="list active">
+                    <a href="/">
+                        <span class="icon">
+                            <img src="../assets3/home.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text"><%= __('home') %></span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/exercise">
+                        <span class="icon">
+                            <img src="../assets3/jogging.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text"><%= __('exercises') %></span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/profile">
+                        <span class="icon">
+                            <img src="../assets3/exercise.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text"><%= __('profile') %></span>
+                    </a>
+                </li>
+                <li class="list">
+                  <a href="/enemy">
+                      <span class="icon">
+                          <img src="../assets3/enemyMain.png" class="mb-3" width="30" height="30" alt="">
+                      </span>
+                      <span class="text"><%= __('enemy') %></span>
+                  </a>
+                </li>
+                <li class="list">
+                    <a href="/shop">
+                        <span class="icon">
+                            <img src="../assets3/store.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text"><%= __('store') %></span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/statis">
+                        <span class="icon">
+                          <img src="../assets3/heart-rate.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text"><%= __('statsForWeek') %></span>
+                    </a>
+                  </li>
+              <!-- <li class="list"><a><span class="icon">
+                <img src="../assets2/xppIcon.png" class="mb-3" width="30" height="30" alt="">
+              </span><span class="text"><%= user ? user.xp : 'N/A' %></span></a></li> -->
+              <li class="list"><a><span class="icon">
+                <img src="../assets2/coinI.png" class="mb-3" width="30" height="30" alt="">
+              </span><span class="text"><%= user ? user.money : 'N/A' %></span></a></li>  
+            </ul>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= __('language') %>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                  <!-- <a class="dropdown-item" href="?lang=<%= i18n.getLocale() %>">English</a>
+                  <a class="dropdown-item" href="?lang=ru">Русский</a> -->
+                  <li><a class="dropdown-item" href="?lang=<%= i18n.getLocale()  === 'ru' ? 'en' : i18n.getLocale() %>">English</a></li>
+                  <li><a class="dropdown-item" href="?lang=ru">Русский</a></li>
+                </ul>
+              </div>
+    
+            <div class="text-end">
+                <a href="/login"><button type="button" class="custom-btn me-2"><%= __('login') %></button></a>
+                <a href="/register"><button type="button" class="custom-btn"><%= __('signup') %></button></a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+    <section id="courses" class="container p-5">
+        <h2 class="text-center text-glow"><%= __('buyExercises') %></h2>
+        
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 100%;"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+    </section>
+
+    
+    <section class="container p-5">
+        <% if (error) { %>
+            <div class="alert alert-danger mt-3" role="alert">
+                <%= error.message %>
+            </div>
+        <% } %>
+        <% if (success) { %>
+            <div class="alert alert-success mt-3" role="alert">
+                <%= success.message %>
+            </div>
+        <% } %>
+        <div class="row">
+            <% exercises.forEach((exercise) => { %>
+                <div class="col-md-3 col-sm-6">
+                    
+                    <div class="card w-75 transparent-card h-100">
+                        <% if (exercise.photos && exercise.photos.length > 0) { %>
+                            <img src="<%= exercise.photos[0] %>" class="card-img-top" alt="<%= exercise.name %>">
+                        <% } else { %>
+                            <img src="path/to/placeholder-image.jpg" class="card-img-top" alt="Placeholder Image">
+                        <% } %>
+                        <div class="card-body">
+                            <% if (i18n.getLocale() === 'ru' && exercise.name_secondary) { %>
+                                <h5 class="card-title"><%= exercise.name_secondary %></h5>
+                            <% } else { %>
+                                <h5 class="card-title"><%= exercise.name %></h5>
+                            <% } %>
+                            <!-- <h5 class="card-title"><%= exercise.name %></h5> -->
+                            <!-- <p class="card-text">Do it for your health</p> -->
+                            <% if (user.exercises.some(exerciseU => exerciseU.exercise.toString() === exercise._id.toString())) { %> 
+                                <h5><%= __('haveBought') %></h5>
+                            <% } %>
+                            <a id="<%= exercise._id %>-button" class="custom-btn" onclick="addExerciseToUser('<%= exercise._id %>')" <% if (user.exercises.some(exerciseU => exerciseU.exercise.toString() === exercise._id.toString())) { %> style="display: none;" <% } %>>
+                                <%= __('buyFor') %> <%= exercise.cost %>  <img src="../assets2/coinI.png" class="mb-3" style="width: 30px; height: 30px;" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+
+
+    <footer class="bg-black text-white text-center py-4 bg-gradient-footer-opacity">
+        <blockquote>
+            <div class="footer-section">
+                <p>&copy; 2023 Armwrestling Category</p>
+            </div>
+        </blockquote>
+    </footer>
+    <script>
+         function addExerciseToUser(exerciseId) {
+            console.log(`Adding exercise to user for ${exerciseId}`);
+            $.ajax({
+                type: 'PUT',
+                url: `/api/user/updateUser2/${exerciseId}`,
+                success: function (response) {
+                    $('body').html(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<h2 class="text-glow"><%= __('searchExercises') %>:</h2>
+<div class="card">
+    <ul>
+        <% if (exercises && Array.isArray(exercises)) { %>
+            <% exercises.forEach(exercise => { %>
+                <div class="card-body">
+                    <% if (i18n.getLocale() === 'ru' && exercise.name_secondary) { %>
+                        <strong><%= __('name') %>:</strong> <%= exercise.name_secondary %><br>
+                    <% } else { %>
+                        <strong><%= __('name') %>:</strong> <%= exercise.name %><br>
+                    <% } %>
+                    <strong><%= __('progress') %>:</strong> <%= exercise.progress %><br>
+                    <strong><%= __('level') %>:</strong> <%= exercise.exercise_level %><br>
+                    <!-- <img src="<%= exercise.photo %>" alt="<%= exercise.name %>" width="120" height="120"> -->
+                    <% if (exercise.photos && exercise.photos.length > 0) { %>
+                        <img src="<%= exercise.photos[0] %>" class="card-img-top" alt="<%= exercise.name %>">
+                    <% } else { %>
+                        <img src="path/to/placeholder-image.jpg" class="card-img-top" alt="Placeholder Image">
+                    <% } %>
+                    <!-- <button class="btn btn-primary" onclick="doExercise('<%= exercise._id %>')">Do Exercise</button> -->
+                    <a class="custom-btn" onclick="doExercise('<%= exercise.exercise%>')">Do <%= exercise.name %></a>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <li>No exercises found for the specified search.</li>
+        <% } %>
+    </ul>
+</div>
+
+<script src="../scripts/doExerciseScript.js"></script>

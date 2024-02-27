@@ -1,0 +1,36 @@
+<h2 class="text-glow">Enemy Carousel:</h2>
+<div class="card">
+    <div id="EnemyCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <% if (enemies && Array.isArray(enemies)) { %>
+                <% enemies.forEach((enemy, index) => { %>
+                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <div class="card-body">
+                            <strong>Name:</strong> <%= enemy.name %><br>
+                            <strong>Health:</strong> <%= enemy.health %><br>
+                            <strong>Damage:</strong> <%= enemy.damage %><br>
+                            <strong>Level:</strong> <%= enemy.enemy_level %><br>
+                            <strong>Reward:</strong> <%= enemy.reward %><br>
+                            <strong>Ability:</strong> <%= enemy.ability %><br>
+                            <img src="<%= enemy.photo %>" class="d-block " style="max-width: 240px;" alt="<%= enemy.name %> Photo">
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="carousel-item active">
+                    <div class="card-body">
+                        <li>No enemies found.</li>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#EnemyCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#EnemyCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>

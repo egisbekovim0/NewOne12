@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly XP graphic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/customMenu.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style>
+        /* Custom styles for the chart container */
+        #chartContainer {
+            width: 70%; /* Adjust the width as needed */
+            float: left; /* Float the container to the left */
+            margin-right: 20px; /* Add some margin for spacing */
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li class="list active">
+                    <a href="/">
+                        <span class="icon">
+                            <img src="../assets3/home.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text">Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/exercise">
+                        <span class="icon">
+                            <img src="../assets3/jogging.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text">Exercises</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/profile">
+                        <span class="icon">
+                            <img src="../assets3/exercise.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text">Profile</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/shop">
+                        <span class="icon">
+                            <img src="../assets3/store.png" class="mb-3" width="30" height="30" alt="">
+                        </span>
+                        <span class="text">Store</span>
+                    </a>
+                </li>
+                <li class="list">
+                  <a href="/stats">
+                      <span class="icon">
+                        <img src="../assets3/heart-rate.png" class="mb-3" width="30" height="30" alt="">
+                      </span>
+                      <span class="text">Stats</span>
+                  </a>
+                </li>
+                <li class="list">
+                  <a href="/statis">
+                      <span class="icon">
+                        <img src="../assets3/heart-rate.png" class="mb-3" width="30" height="30" alt="">
+                      </span>
+                      <span class="text">StatsForWeek</span>
+                  </a>
+                </li>
+                <li class="list"><a><span class="icon">
+                  <img src="../assets2/xppIcon.png" class="mb-3" width="30" height="30" alt="">
+                </span><span class="text"><%= user ? user.xp : 'N/A' %></span></a></li>
+                <li class="list"><a><span class="icon">
+                  <img src="../assets2/coinI.png" class="mb-3" width="30" height="30" alt="">
+                </span><span class="text"><%= user ? user.money : 'N/A' %></span></a></li>
+              
+            </ul>
+    
+            <div class="text-end">
+              <a href="/login"><button type="button" class="custom-btn me-2">Login</button></a>
+              <a href="/register"><button type="button" class="custom-btn">Sign-up</button></a>
+            </div>
+          </div>
+        </div>
+      </header>
+  <div id="chartContainer" data-user-id="<%= user ? user._id : '' %>">
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    const ctx = document.getElementById('myChart');
+    const chartContainer = document.getElementById('chartContainer');
+    const userId = chartContainer.dataset.userId;
+
+    async function fetchData() {
+        try {
+            const response = await fetch(`/api/user/${userId}/weekly-xp`);
+            const data = await response.json();
+            updateChart(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    function updateChart(newData) {
+        myChart.data.datasets[0].data = newData; // Assuming newData is an array of XP values
+        myChart.update(); // Update the chart
+    }
+  
+    const data = {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      datasets: [{
+        label: 'XP Earned',
+        data: [50, 120, 80, 30, 100, 60, 90],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    };
+
+    const options = {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    };
+
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+
+    fetchData();
+  </script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<div class="card">
+    <ul>
+        <% if (user && user.exercises && user.exercises.length > 0) { %>
+            <% user.exercises.forEach(exercise => { %>
+                <div class="card-body">
+                    <% if (i18n.getLocale() === 'ru' && exercise.name_secondary) { %>
+                        <strong><%= __('name') %>:</strong> <%= exercise.name_secondary %><br>
+                    <% } else { %>
+                        <strong><%= __('name') %>:</strong> <%= exercise.name %><br>
+                    <% } %>
+                    <strong><%= __('progress') %>:</strong> <%= exercise.progress %><br>
+                    <strong><%= __('level') %>:</strong> <%= exercise.exercise_level %><br>
+                    <!-- data-bs-ride="carousel" data-bs-interval="3000" -->
+                    <div id="Carousel<%= exercise._id %>" class="carousel slide">
+                        <div class="carousel-inner">
+                            <% exercise.photos.forEach((photo, index) => { %>
+                                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                    <img src="<%= photo %>" class="d-block w-100" style="max-width: 120px;" alt="<%= exercise.name %> Photo <%= index + 1 %>">
+                                </div>
+                            <% }); %>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#Carousel<%= exercise._id %>" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#Carousel<%= exercise._id %>" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <!-- <img src="<%= exercise.photo %>" alt="<%= exercise.name %>" width="120" height="120"> -->
+                </div>
+            <% }); %>
+        <% } else { %>
+            <li><%= __('noExerciseFoundForSearch') %></li>
+        <% } %>
+    </ul>
+</div>

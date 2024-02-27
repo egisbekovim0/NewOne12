@@ -1,0 +1,52 @@
+<!-- exercisePage.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            $('form').submit(function(event) {
+                event.preventDefault();
+                const exerciseType = $('#exerciseType').val();
+                console.log(exerciseType);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/user/gett',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ exerciseType: exerciseType }),
+                    success: function(response) {
+                      
+                        $('#exerciseContainer').html(response);
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <h1>Select Exercise Type</h1>
+    
+    <form action="/getExercises" method="post">
+        <label for="exerciseType">Choose an exercise type:</label>
+        <select name="exerciseType" id="exerciseType">
+            <% exerciseTypes.forEach(type => { %>
+                <option value="<%= type._id %>"><%= type.name %></option>
+            <% }); %>
+        </select>
+        <button type="submit">Get Exercises</button>
+    </form>
+    
+    <div id="exerciseContainer">
+        <!-- This section will be dynamically updated with exercises -->
+    </div>
+</body>
+</html>
